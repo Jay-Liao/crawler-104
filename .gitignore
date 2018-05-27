@@ -1,0 +1,11 @@
+MinSellSpot.txt
+output.txt
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pycharm setting
+.idea/
+venv
