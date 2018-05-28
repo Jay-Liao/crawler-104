@@ -3,6 +3,7 @@ from constants import job_constant
 from constants import company_constant
 from utils import crawler
 from utils import csv_reader
+from urllib import parse
 
 
 def is_invalid_job(job):
@@ -29,9 +30,16 @@ for company in filtered_companies:
         continue
     job_result = crawler.find_jobs_by_company_id(company_id=company_id)
     jobs = job_result["data"]
+    for job in jobs:
+        company_name = company.get(company_constant.COMPANY_NAME)
+        job_title = job.get(job_constant.JOB)
+        query = f"?q={company_name}+{job_title}"
+        utf8_encoded_query = parse.quote_plus(string=query, encoding="utf8")
+        search_url = f"https://www.google.com.tw/search?q={company_name}+{job_title}"
+        job[job_constant.SEARCH_URL] = search_url
     total_jobs.extend(jobs)
     print(f"{len(jobs)} {company}")
-    time.sleep(1)
+    time.sleep(0.8)
 
 # filter jobs
 filtered_jobs = [job for job in total_jobs if is_invalid_job(job)]
