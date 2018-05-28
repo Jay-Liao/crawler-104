@@ -12,7 +12,8 @@ def find_company_id_by_name(company_name):
     utf8_encoded_params = parse.urlencode(params).encode("utf-8")
     response = requests.get(
         url=search_company_url,
-        params=utf8_encoded_params
+        params=utf8_encoded_params,
+        timeout=3
     )
     whole_body_soup = BeautifulSoup(response.content, "lxml")
     first_company_summary_div = whole_body_soup.select_one('div[class="company-summary"]')
@@ -47,10 +48,14 @@ def find_jobs_by_company_id(company_id):
         "incs": 2,
         "role": 1,
         "cols": "NAME,JOB,DESCRIPTION,OTHERS,JOB_ADDRESS,JOB_ADDR_NO_DESCRIPT",
-        "pgsz": 100
+        "pgsz": 999
     }
     utf8_encoded_params = parse.urlencode(params).encode("utf-8")
-    response = requests.get(url=search_job_url, params=utf8_encoded_params)
+    response = requests.get(
+        url=search_job_url,
+        params=utf8_encoded_params,
+        timeout=3
+    )
     data = response.json()
     response.close()
     return data
