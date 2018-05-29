@@ -9,4 +9,4 @@ __pycache__/
 # Pycharm setting
 .idea/
 venv
-*_export.json
+*.json

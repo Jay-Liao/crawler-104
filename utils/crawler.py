@@ -15,7 +15,11 @@ def find_company_id_by_name(company_name):
         params=utf8_encoded_params,
         timeout=3
     )
-    whole_body_soup = BeautifulSoup(response.content, "lxml")
+    if response is None or response.status_code != 200:
+        print(f"find_company_id_by_name({company_name}) fail")
+    content = response.content
+    response.close()
+    whole_body_soup = BeautifulSoup(content, "lxml")
     first_company_summary_div = whole_body_soup.select_one('div[class="company-summary"]')
     if first_company_summary_div is None:
         return None
@@ -56,6 +60,44 @@ def find_jobs_by_company_id(company_id):
         params=utf8_encoded_params,
         timeout=3
     )
-    data = response.json()
-    response.close()
-    return data
+    try:
+        data = response.json()
+        return data["data"]
+    except:
+        print(f"find_jobs_by_company_id({company_id}) fail.")
+        return list()
+    finally:
+        response.close()
+
+
+def find_jobs_by_company_ids(company_ids):
+    search_job_url = "http://www.104.com.tw/i/apis/jobsearch.cfm"
+    params = {
+        "fmt": 8,
+        "c": ",".join(company_ids),
+        "area": "6001001000",
+        # cat: 2007001000 軟體╱工程類人員全部, 2007001004 軟體設計工程師, 2007001006 Internet程式設計師
+        "cat": "2007001004,2007001006",
+        "kwop": 3,
+        "kws": "python",
+        "role_status": 19,
+        "intmp": 2,
+        "incs": 2,
+        "role": 1,
+        "cols": "NAME,JOB,DESCRIPTION,OTHERS,JOB_ADDRESS,JOB_ADDR_NO_DESCRIPT",
+        "pgsz": 999
+    }
+    utf8_encoded_params = parse.urlencode(params).encode("utf-8")
+    response = requests.get(
+        url=search_job_url,
+        params=utf8_encoded_params,
+        timeout=3
+    )
+    try:
+        data = response.json()
+        return data["data"]
+    except:
+        print(f"find_jobs_by_company_ids({company_ids}) fail.")
+        return list()
+    finally:
+        response.close()
