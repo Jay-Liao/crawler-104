@@ -17,7 +17,7 @@ python run.py
 ## Customize Filter
 crawler-104/filters/job_filter.py
 ```py
-exclude_job_keywords = ["硬體"] # exlude jobs which job title contain exclude_job_keywords.
+exclude_job_keywords = ["硬體"] # exlude jobs which job title contain exclude_job_keywords
 
 include_keyword = "python" # include jobs which job title, job description or skills contain include_keyword
 ```
