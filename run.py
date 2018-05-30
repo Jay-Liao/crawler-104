@@ -44,7 +44,7 @@ if __name__ == "__main__":
     print(f"filtered_companies: {len(filtered_companies)}")
 
     start_time = time.time()
-    executor = ThreadPoolExecutor(max_workers=2)
+    executor = ThreadPoolExecutor(max_workers=1)
     company_tasks = list()
     for company in filtered_companies:
         company_task = executor.submit(do_company_task, company)

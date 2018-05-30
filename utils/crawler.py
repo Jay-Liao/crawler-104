@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 from urllib import parse
 import requests
+from filters import job_filter
 
 
 def find_company_id_by_name(company_name):
@@ -13,13 +14,17 @@ def find_company_id_by_name(company_name):
     response = requests.get(
         url=search_company_url,
         params=utf8_encoded_params,
-        timeout=3
+        timeout=10
     )
     if response is None or response.status_code != 200:
         print(f"find_company_id_by_name({company_name}) fail")
     content = response.content
     response.close()
     whole_body_soup = BeautifulSoup(content, "lxml")
+    company_result_div = whole_body_soup.select_one('div[id="company-result"]')
+    if company_result_div is None:
+        print(f"find_company_id_by_name({company_name}) fail")
+        return None
     first_company_summary_div = whole_body_soup.select_one('div[class="company-summary"]')
     if first_company_summary_div is None:
         return None
@@ -46,7 +51,7 @@ def find_jobs_by_company_id(company_id):
         # cat: 2007001000 軟體╱工程類人員全部, 2007001004 軟體設計工程師, 2007001006 Internet程式設計師
         "cat": "2007001004,2007001006",
         "kwop": 3,
-        "kws": "python",
+        "kws": job_filter.include_keyword,
         "role_status": 19,
         "intmp": 2,
         "incs": 2,
@@ -58,7 +63,7 @@ def find_jobs_by_company_id(company_id):
     response = requests.get(
         url=search_job_url,
         params=utf8_encoded_params,
-        timeout=3
+        timeout=10
     )
     try:
         data = response.json()
@@ -79,7 +84,7 @@ def find_jobs_by_company_ids(company_ids):
         # cat: 2007001000 軟體╱工程類人員全部, 2007001004 軟體設計工程師, 2007001006 Internet程式設計師
         "cat": "2007001004,2007001006",
         "kwop": 3,
-        "kws": "python",
+        "kws": job_filter.include_keyword,
         "role_status": 19,
         "intmp": 2,
         "incs": 2,
