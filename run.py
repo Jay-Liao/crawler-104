@@ -1,3 +1,4 @@
+import os
 import time
 import datetime
 import random
@@ -11,6 +12,7 @@ from utils import crawler
 from utils import csv_reader
 from utils import file_util
 from utils import job_util
+from filters import industry_filter
 
 
 def do_company_task(company):
@@ -36,13 +38,22 @@ def do_job_task(companies):
 
 
 if __name__ == "__main__":
-    csv_file_path = "106.csv"
-    companies = csv_reader.read_companies_info_from_csv(csv_file_path)
-    target_industries = ["民間產業/資訊", "民間產業/數位內容", "民間產業/通訊"]
-    filtered_companies = [company for company in companies if company["industry"] in target_industries]
+    directory = "csv_data"
+    companies_map = dict()
+    for root, dirs, files in os.walk(directory):
+        for filename in files:
+            csv_file_path = os.path.join(root, filename)
+            companies = csv_reader.read_companies_info_from_csv(csv_file_path)
+            for company in companies:
+                companies_map[company[company_constant.COMPANY_NAME]] = company
+            print(f"The {csv_file_path} has been read.")
+    companies = [company for company in companies_map.values()]
+    industries = list(set([company[company_constant.INDUSTRY] for company in companies]))
+    target_industries = industry_filter.target_industries
+    filtered_companies = [company for company in companies if company[company_constant.INDUSTRY] in target_industries]
+    print(f"industries: {industries}")
     print(f"companies: {len(companies)}")
     print(f"filtered_companies: {len(filtered_companies)}")
-
     start_time = time.time()
     executor = ThreadPoolExecutor(max_workers=1)
     company_tasks = list()

@@ -49,9 +49,9 @@ def find_jobs_by_company_id(company_id):
         "c": company_id,
         "area": "6001001000",
         # cat: 2007001000 軟體╱工程類人員全部, 2007001004 軟體設計工程師, 2007001006 Internet程式設計師
-        "cat": "2007001004,2007001006",
+        "cat": "2007001004+2007001006",
         "kwop": 3,
-        "kws": job_filter.include_keyword,
+        "kws": "+".join(job_filter.include_keywords),
         "role_status": 19,
         "intmp": 2,
         "incs": 2,
@@ -82,9 +82,9 @@ def find_jobs_by_company_ids(company_ids):
         "c": ",".join(company_ids),
         "area": "6001001000",
         # cat: 2007001000 軟體╱工程類人員全部, 2007001004 軟體設計工程師, 2007001006 Internet程式設計師
-        "cat": "2007001004,2007001006",
+        "cat": "2007001004+2007001006",
         "kwop": 3,
-        "kws": job_filter.include_keyword,
+        "kws": "+".join(job_filter.include_keywords),
         "role_status": 19,
         "intmp": 2,
         "incs": 2,
