@@ -63,7 +63,7 @@ def find_jobs_by_company_id(company_id):
     response = requests.get(
         url=search_job_url,
         params=utf8_encoded_params,
-        timeout=10
+        timeout=20
     )
     try:
         data = response.json()
@@ -90,13 +90,13 @@ def find_jobs_by_company_ids(company_ids):
         "incs": 2,
         "role": 1,
         "cols": "NAME,JOB,DESCRIPTION,OTHERS,JOB_ADDRESS,JOB_ADDR_NO_DESCRIPT",
-        "pgsz": 999
+        "pgsz": 999*5
     }
     utf8_encoded_params = parse.urlencode(params).encode("utf-8")
     response = requests.get(
         url=search_job_url,
         params=utf8_encoded_params,
-        timeout=3
+        timeout=20
     )
     try:
         data = response.json()

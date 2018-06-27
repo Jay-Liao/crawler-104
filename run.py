@@ -20,6 +20,7 @@ def do_company_task(company):
     time.sleep(sleeping)
     company_id = crawler.find_company_id_by_name(company[company_constant.COMPANY_NAME])
     company[company_constant.COMPANY_ID] = company_id
+    print(f"{company[company_constant.COMPANY_NAME]} {company_id}")
     return company
 
 
@@ -52,6 +53,7 @@ if __name__ == "__main__":
     target_industries = industry_filter.target_industries
     filtered_companies = [company for company in companies if company[company_constant.INDUSTRY] in target_industries]
     print(f"industries: {industries}")
+    print(f"target_industries: {target_industries}")
     print(f"companies: {len(companies)}")
     print(f"filtered_companies: {len(filtered_companies)}")
     start_time = time.time()

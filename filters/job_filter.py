@@ -4,4 +4,4 @@ exclude_job_title_keywords = [
     "Front", "Full", "Support", "Learning", "Test", "Research", "Architect"]
 
 # or logic
-include_keywords = ["python"]
+include_keywords = ["python", "golang"]
