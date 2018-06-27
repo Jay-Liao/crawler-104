@@ -94,5 +94,5 @@ if __name__ == "__main__":
     now = datetime.datetime.now()
     time_str = now.strftime("%Y%m%d_%H%M%S")  # ex. 20180118162739
     export_filename = f"{time_str}_export_{len(target_companies)}_{len(target_jobs)}.json"
-    file_util.save_dict_as_json_file(directory_path=".", filename=export_filename, dict_data=export_data)
+    file_util.save_dict_as_json_file(file_path=export_filename, dict_data=export_data)
     print(f"File is exported: {export_filename} {time.time() - start_time}")
